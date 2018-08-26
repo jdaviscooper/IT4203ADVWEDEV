@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Caculator using span and traditional JavaScript</title>
+    <style>
+        
+        #wrapper 
+        {
+            width: 545px;
+            border-radius: 20px 20px;
+            border: 4px solid black;
+            margin: auto;
+            height: 580px;
+            background: -webkit-linear-gradient(top, gray 0%, white 35%, gray 100%);
+        }
+        
+        #display
+        {
+            border:2px solid black;
+            height: 60px; 
+            margin: 10px;
+            border-radius: 10px 10px;
+            background: #d0ecec;
+            font-size: 50px;
+            line-height: 60px;
+            font-family: Arial;
+            text-align: right;
+        }
+        
+       #button1
+        {
+            width: 365px; 
+            margin: 10px;
+            float: left;
+            border: 2px solid black;
+            border-radius: 10px 10px;
+        }
+        
+        #button2
+        {
+            width: 130px;
+            margin: 10px;
+            float: left;
+            border: 2px solid black;
+            border-radius: 10px 10px;
+        }
+      
+        #button1 span, #button2 span
+        {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border: 4px solid #d0ecec;
+            box-shadow: 10px 0px 5px gray;
+            border-radius: 50%;
+            margin: 5px;
+            text-align: center;
+            font-size: 50px;
+            line-height: 100px;
+            font-family: Arial;
+            background: -webkit-linear-gradient(top, #feffff 0%,#ddf1f9 35%,#a0d8ef 100%);
+        }
+        
+        #button2 span
+        {
+            background: -webkit-linear-gradient(top, #feffff 0%,#ddf1f9 35%,green 100%);
+        }
+        #button1 span:hover, #button2 span:hover
+        {
+            box-shadow: 0px 0px 20px red;
+            cursor: pointer;
+        }
+                
+    </style>
+
+        <script>
+            var num1 = -1;
+            var num2 = -1;
+            var result = -1;
+            var op;
+
+            function enternumber(num) {
+                document.getElementById("display").innerText += num;
+            }
+
+            //when clicking an operator sign
+            function getOp(operator) {
+                num1 = parseInt(document.getElementById("display").innerText);
+                document.getElementById("display").innerText = '';
+                op = operator;
+            }
+
+            //when clicking the = sign
+            function calc() {
+                num2 = parseInt(document.getElementById("display").innerText);
+                switch (op) {
+                    case 1: result = num1 / num2; break;
+                    case 2: result = num1 * num2; break;
+                    case 3: result = num1 - num2; break;
+                    case 4: result = num1 + num2; break;
+                }
+                document.getElementById("display").innerText = result;
+                //num1 = result;
+            }
+
+            function clearall() {
+                num1 = -1;
+                num2 = -1;
+                document.getElementById("display").innerText = '';
+            }
+        </script>
+    </head>
+    <body>
+
+        <div id="wrapper">
+            <div id="display"></div>
+            <div id="button1">
+                <span onclick="enternumber(1)">1</span>
+                <span onclick="enternumber(2)">2</span>
+                <span onclick="enternumber(3)">3</span>
+                <span onclick="enternumber(4)">4</span>
+                <span onclick="enternumber(5)">5</span>
+                <span onclick="enternumber(6)">6</span>
+                <span onclick="enternumber(7)">7</span>
+                <span onclick="enternumber(8)">8</span>
+                <span onclick="enternumber(9)">9</span>
+                <span onclick="enternumber(0)">0</span>
+                <span onclick="clearall()">C</span>
+                <span onclick="calc()" id="calculate">=</span>
+            </div>
+            <div id="button2">
+                <span id="op1" onclick="getOp(1)">/</span>
+                <span id="op2" onclick="getOp(2)">X</span>
+                <span id="op3" onclick="getOp(3)">-</span>
+                <span id="op4" onclick="getOp(4)">+</span>
+            </div>
+        </div>
+
+    </body>
+</html>
