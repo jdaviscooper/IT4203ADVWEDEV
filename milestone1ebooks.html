@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset=utf-8>
+        <title>IT e-Books Search</title>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <style>
+                body {
+                    background-color: orange;
+                                    
+                }
+                .image {
+                    float: left;
+                    margin-right: 10px;
+                                       
+                }
+                h1{text-align:center;}
+                .title {font-weight: bold;}
+                .clearContent{clear:left;}
+</style>
+</head>
+
+<body>
+        <h1>IT e-Books Search</h1>
+        
+        
+        
+        <script type="text/javascript" language = "javascript">
+        $(document).ready(function(){       		
+                $.getJSON("http://it-ebooks-api.info/v1/search/modern%20web", function(result){
+                    for(var i=0;  i < result.Books.length; i++){
+                        $('#display').append(
+                                '<div class="clearContent"><span class="image"><img src=' + result.Books[i].Image + '></span>'+
+                                '<span class="title"> ID: </span>' + result.Books[i].ID + 
+                                '<br><span class="title"> Title:  </span> ' + result.Books[i].Title + 
+                                '<br><span class="title">Subtitle: </span>' + result.Books[i].SubTitle +  
+                                '<br><span class="title">Description: </span>'+result.Books[i].Description  +  
+                                '<br><span class="title">ISBN: </span>' +result.Books[i].isbn+'</div><br><br><br><br><br><br><br><br><br>');
+                    };
+                });           
+        });
+        </script>
+        
+</body>
+</html>
