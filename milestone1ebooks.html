@@ -18,6 +18,7 @@
                 .title {font-weight: bold;}
                 .clearContent{clear:left;}
 </style>
+<a href="milestone1.html"> RETURN TO PREVIOUS</a>
 </head>
 
 <body>
@@ -26,20 +27,24 @@
         
         
         <script type="text/javascript" language = "javascript">
-        $(document).ready(function(){       		
-                $.getJSON("http://it-ebooks-api.info/v1/search/modern%20web", function(result){
-                    for(var i=0;  i < result.Books.length; i++){
-                        $('#display').append(
-                                '<div class="clearContent"><span class="image"><img src=' + result.Books[i].Image + '></span>'+
-                                '<span class="title"> ID: </span>' + result.Books[i].ID + 
-                                '<br><span class="title"> Title:  </span> ' + result.Books[i].Title + 
-                                '<br><span class="title">Subtitle: </span>' + result.Books[i].SubTitle +  
-                                '<br><span class="title">Description: </span>'+result.Books[i].Description  +  
-                                '<br><span class="title">ISBN: </span>' +result.Books[i].isbn+'</div><br><br><br><br><br><br><br><br><br>');
-                    };
-                });           
-        });
-        </script>
-        
+                $(document).ready(function(){
+                        $.getJSON("https://www.googleapis.com/books/v1/volumes?q=modern%20web", function(result){
+                             for(var i=0; i < result.items.length; i++){
+                                  $('#displayBook').append(
+                                        '<p><div class="clearContent"><span class="image"><img src=' + result.items[i].volumeInfo.imageLinks.thumbnail+ '></div>'+
+
+                                        '<span class="title"> Title:  </span> ' + result.items[i].volumeInfo.title +
+                                        '<br><span class="title">Subtitle: </span>' + result.items[i].volumeInfo.subtitle +
+        				'<br><span class="title">Authors: </span>' + result.items[i].volumeInfo.authors +
+        				'<br><span class="title">Publisher: </span>' + result.items[i].volumeInfo.publisher +
+        				'<br><span class="title">Published Date: </span>' + result.items[i].volumeInfo.publishedDate+
+                                        '<br><span class="title">Description: </span>'+result.items[i].volumeInfo.description+
+        				'<br><span class="title">ISBN 13: </span>' +result.items[i].volumeInfo.industryIdentifiers[0].identifier+
+        				'<br><span class="title">ISBN 10: </span>' +result.items[i].volumeInfo.industryIdentifiers[1].identifier+'</p><br><br>');
+
+        		     }
+                        });
+                });
+         </script>
 </body>
 </html>
