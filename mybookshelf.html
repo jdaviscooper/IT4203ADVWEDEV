@@ -23,7 +23,7 @@
 </head>
 <center><script>
     $(function () {
-		var service_point = "https://www.googleapis.com/books/v1/users/106955433011694532244/bookshelves/0";
+		var service_point = "https://www.googleapis.com/books/v1/users/106955433011694532244/bookshelves/0/volumes";
         $.getJSON(service_point, function (json) {
             resultHTML = "";
             for (i in json.items) {
