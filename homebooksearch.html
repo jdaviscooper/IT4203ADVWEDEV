@@ -1,87 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<title>Home Book Search</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-header {
-    background-color: #666;
-    padding: 30px;
-    text-align: center;
-    font-size: 35px;
-    color: white;
-}
-
-nav {
-    float: left;
-    width: 30%;
-    height: 300px; 
-    background: #ccc;
-    padding: 20px;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-article {
-    float: left;
-    padding: 20px;
-    width: 70%;
-    background-color: #f1f1f1;
-    height: 300px; 
-}
-
-
-section:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
-footer {
-    background-color: #777;
-    padding: 10px;
-    text-align: center;
-    color: white;
-}
-
- (max-width: 600px) {
-    nav, article {
-        width: 100%;
-        height: auto;
-    }
-}
+        <title>Home (Book Search)</title>
+		<a href="milestone2.html"> RETURN TO PREVIOUS</a>
+		<h1><center>Home (Book Search)</center></h1>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <style>
+                body {
+                    background-color: orange;
+                                    
+                }
+                .image {
+                    float: left;
+                    margin-right: 10px;
+                                       
+                }
+                h1{text-align:center;}
+                .title {font-weight: bold;}
+                .clearContent{clear:left;}
 </style>
 </head>
-<body>
 
-<header>
-  <h2>Home</h2>
-</header>
-
-<section>
-  <nav>
-    <ul>
-	         <li><a href="mybookshelf.html">My Bookshelf</a></li>
-      </ul>
-  </nav>
-  
-  <article>
-    <center><<h1>Book Search</h1>
-    <p> <form action= "https://www.googleapis.com/books/v1/volumes?q=" method="get">
+<form action= "https://www.googleapis.com/books/v1/volumes?q=" method="get">
 			
 		</form>
                <center><input id="search">
@@ -130,17 +71,8 @@ $("ul").hide();
     });
   });
 
-
-
-          
 </script>
-</html></p>
-  </article>
-</section>
 
-<footer>
-  <p><a href="milestone2.html">Previous Page</a></p>
-</footer>
+             
 
-</body>
 </html>
