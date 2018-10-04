@@ -21,3 +21,65 @@
                 .clearContent{clear:left;}
 </style>
 </head>
+<center><script>
+    $(function () {
+		var service_point = "https://www.googleapis.com/books/v1/users/108725110449245513551/bookshelves/1001/volumes";
+        $.getJSON(service_point, function (json) {
+            resultHTML = "";
+            for (i in json.items) {
+                var booktitle = json.items[i].volumeInfo.title;
+                var bookid = json.items[i].id;
+                var cover = json.items[i].volumeInfo.imageLinks.smallThumbnail;
+
+                resultHTML += "<div class='bookdiv'>";
+                resultHTML += "<a href='bookinfo.html?id=" + bookid + "'>" + booktitle + "</a>";
+				resultHTML += "<br><br><img src='" + cover + "'/>";
+                resultHTML += "</div>";;
+            }
+            $("#results").html(resultHTML);
+            $(".bookdiv").css("width", "300px");
+        });
+    });
+</script>
+<style>
+p {
+	font-size: 18px;
+}
+a.btnlink {
+	text-decoration: none;
+}
+a:link {
+    color: #2387ba;
+}
+a:visited {
+    color: #8d2ca5;
+}
+.btn {
+    background-color: white;
+    border-color: #a0e572;
+    color: #2387ba;
+    padding: 12px 16px;
+    font-size: 16px;
+	font-family: Georgia, serif;
+    cursor: pointer;
+}
+.btn:hover {
+    background-color: #ebffdd;
+}
+.bookdiv {
+	padding: 20px 20px 20px 20px;
+}
+#content {
+	background-color: white;
+	border-color: #a0e572;
+	border-style: dashed;
+	border-width: 2px;
+}
+</center></style>
+</head>
+
+<div id="results" style="display: flex; flex-wrap: wrap;"></div>
+</div>
+
+</body>
+</html>
