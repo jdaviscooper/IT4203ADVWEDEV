@@ -1,39 +1,94 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-
-    <title>Milestone 2</title>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<title>Milestone 2</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-div {
-    background-color: orange;
-    width: 300px;
-    border: 25px lightgrey;
-    padding: 25px;
-    margin: 25px;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    background-color: #666;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    color: white;
+}
+
+nav {
+    float: left;
+    width: 30%;
+    height: 300px; 
+    background: #ccc;
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+article {
+    float: left;
+    padding: 20px;
+    width: 70%;
+    background-color: #f1f1f1;
+    height: 300px; 
+}
+
+
+section:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+footer {
+    background-color: #777;
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+ (max-width: 600px) {
+    nav, article {
+        width: 100%;
+        height: auto;
+    }
 }
 </style>
-<a href="index.html"> RETURN TO HOME PAGE</a>
 </head>
-<body><center>
+<body>
 
-<h1>Milestone 2</h1>
+<header>
+  <h2>Milestone 2</h2>
+</header>
 
-<div><center><h2>Main Menu</h2>
-    <a href="homebooksearch.html">
-        <h2>Home (Book Search)</h2>
-    </a>
-    <p></p>
-    <br><br><br>
-    <a href="mybookshelf.html">
-        <h2>My Bookshelf</h2>
-    </a>
-    <p></p>
-    <br><br><br>
-    </center></div>
+<section>
+  <nav>
+    <ul>
+	        <li><a href="homebooksearch.html">Book Search</a></li>
+      <li><a href="mybookshelf.html">My Bookshelf</a></li>
+      </ul>
+  </nav>
+  
+  <article>
+    <h1>Google Books API</h1>
+    <p>London is the capital city of England. It is the most populous city in the  United Kingdom, with a metropolitan area of over 13 million inhabitants.</p>
+    <p>Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium.</p>
+  </article>
+</section>
 
-</center></body>
+<footer>
+  <p><a href="index.html">Previous Page</a></p>
+</footer>
+
+</body>
 </html>
