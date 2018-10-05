@@ -1,27 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<title>My Bookshelf</title>
 <meta charset="utf-8">
-        <title>My Bookshelf</title>
-		<a href="milestone2.html"> RETURN TO PREVIOUS</a>
-		<h1><center>My Bookshelf</center></h1>
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <style>
-                body {
-                    background-color: orange;
-                                    
-                }
-                .image {
-                    float: left;
-                    margin-right: 10px;
-                                       
-                }
-                h1{text-align:center;}
-                .title {font-weight: bold;}
-                .clearContent{clear:left;}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+header {
+    background-color: #666;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    color: white;
+}
+
+
+section {
+    display: -webkit-flex;
+    display: flex;
+}
+
+
+
+
+article {
+    -webkit-flex: 3;
+    -ms-flex: 3;
+    flex: 3;
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+
+footer {
+    background-color: #777;
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+
+@media (max-width: 600px) {
+    section {
+      -webkit-flex-direction: column;
+      flex-direction: column;
+    }
+}
 </style>
 </head>
-<center><script>
+<body>
+
+<header>
+  <h2>My Bookshelf</h2>
+</header>
+
+<section>
+    
+  <article>
+    <center><h1>My Bookshelf: Favorites</h1>
+<script>
     $(function () {
 		var service_point = "https://www.googleapis.com/books/v1/users/106955433011694532244/bookshelves/0/volumes";
         $.getJSON(service_point, function (json) {
@@ -80,6 +126,14 @@ a:visited {
 
 <div id="results" style="display: flex; flex-wrap: wrap;"></div>
 </div>
+
+
+  </article>
+</section>
+
+<footer>
+  <p><a href="homebooksearch.html">Home (Book Search)</a><br></br><a href="milestone2.html">Previous Page</a> </p>
+</footer>
 
 </body>
 </html>
