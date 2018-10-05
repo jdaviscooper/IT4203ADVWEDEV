@@ -1,28 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<title>Home Book Search</title>
 <meta charset="utf-8">
-        <title>Home (Book Search)</title>
-		<a href="milestone2.html"> RETURN TO PREVIOUS</a>
-		<h1><center>Home (Book Search)</center></h1>
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <style>
-                body {
-                    background-color: orange;
-                                    
-                }
-                .image {
-                    float: left;
-                    margin-right: 10px;
-                                       
-                }
-                h1{text-align:center;}
-                .title {font-weight: bold;}
-                .clearContent{clear:left;}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+header {
+    background-color: #666;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    color: white;
+}
+
+
+section {
+    display: -webkit-flex;
+    display: flex;
+}
+
+
+
+
+article {
+    -webkit-flex: 3;
+    -ms-flex: 3;
+    flex: 3;
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+
+footer {
+    background-color: #777;
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+
+@media (max-width: 600px) {
+    section {
+      -webkit-flex-direction: column;
+      flex-direction: column;
+    }
+}
 </style>
 </head>
+<body>
 
-<form action= "https://www.googleapis.com/books/v1/volumes?q=" method="get">
+<header>
+  <h2>Home</h2>
+</header>
+
+<section>
+    
+  <article>
+    <h1>Book Search</h1>
+    <form action= "https://www.googleapis.com/books/v1/volumes?q=" method="get">
 			
 		</form>
                <center><input id="search">
@@ -73,6 +118,12 @@ $("ul").hide();
 
 </script>
 
-             
+  </article>
+</section>
 
+<footer>
+  <p><a href="mybookshelf.html">My Bookshelf</a><br></br><a href="milestone2.html">Previous Page</a> </p>
+</footer>
+
+</body>
 </html>
