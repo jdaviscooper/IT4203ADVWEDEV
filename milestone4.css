@@ -1,5 +1,5 @@
 body {
-  background-color: #fff;
+  background-color: #777;
   color: black;
   font-family: 'Arial';
 }
@@ -33,17 +33,17 @@ ul>li {
 
 .button {
   border-radius:5px;
-  background-color:white;
+  background-color:orange;
 }
 
 #submit {
   border-radius: 5px;
-  background-color:white;
+  background-color:orange;
 }
 
 #list {
   border-radius:5px;
-  background-color:white;
+  background-color:orange;
 }
 
 #grid {
@@ -78,9 +78,9 @@ ul>li {
 }
 
 .highlight {
-  background: red;
+  background: orange;
 }
 
 .highlight-view {
-  background: red;
+  background: orange;
 }
