@@ -1,90 +1,114 @@
 <!DOCTYPE html>
 <html>
-<html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
-
     <title>Milestone 4</title>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js"></script>
-	
-	
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Nova+Flat' rel='stylesheet'>
+    <link rel="stylesheet" href="milestone4.css">
+  </head>
+  <body>
+	<a href="index.html"> RETURN TO HOME PAGE</a>
+    <h1>Milestone 4</h1>
+   
+    <!---search bar & search functionality-->
+      <div id="searchBar" align="center">
+        <span id="searchLabel">Enter search terms: </span> <input type="search" id="search-box" name="SearchBox">
+        <input id="submit" class="page" type="submit" value="Search" data-page="0">
+        <button class="view-option-btn" id="list" type="button">List View</button></li>
+        <button class="view-option-btn highlight-view" id="grid" type="button">Grid View</button></li>
+        <br><br>
+        <ul>
+          <li><button class="page button highlight" id="0" data-page="0" type="button">1</button></li>
+          <li><button class="page button" id="1" data-page="1" type="button">2</button></li>
+          <li><button class="page button" id="2" data-page="2" type="button">3</button></li>
+          <li><button class="page button" id="3" data-page="3" type="button">4</button></li>
+          <li><button class="page button" id="4" data-page="4" type="button">5</button></li>
+      </div>
+    <!--displays book search results, my bookshelf & respective details-->
+<div id="whiteDiv" class="container">
+  <h2> Book Results </h2>
+      <div class="row">
+        <div id="booksDiv" class="col-xs-8">
+          <script id="bookListTemplate" type="text/template">
+            <div class="row is-flex">
+              {{#books}}
+                <div class="book class-to-toggle col-xs-6" data-bookid="{{id}}">
+                  <div class="row">
+                    <div class="bookInformationImg col-xs-12">
+                      <img class='thumbnail' src='{{volumeInfo.imageLinks.smallThumbnail}}'/>
+                    </div>
+                    <div class="bookInformationTitle col-xs-12">
+                      <h2 class='title'>{{volumeInfo.title}}</h2>
+                    </div>
+                  </div>
+                </div>
+              {{/books}}
+            </div>
+            </script>
+        </div>
+        <div class="col-xs-4">
+          <br><br>
+          <div id="detailsContainer" class="clearfix">
+            <h2 align="center"><b> My Bookshelf </b></h2>
+            
+            <div id="myBookshelf">
+              <script id="bookShelfTemplate" type="text/template">
+                {{#books}}
+                  <div class="row">
+                    <div class="book" data-bookid="{{id}}">
+                        <div class="col-xs-6">
+                          <img class='thumbnail' src='{{volumeInfo.imageLinks.smallThumbnail}}'/>
+                        </div>
+                        <div class="col-xs-6">
+                          <h3 class='title'><b>Title: </b>{{volumeInfo.title}}</h3>
+                          <h3 class='author'><b>Author: </b>{{volumeInfo.authors}}</h3>
+
+                      </div>
+                    </div>
+                  </div>
+                {{/books}}
+                </script>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h2> Book Details </h2>
+            </div>
+            <div class="modal-body">
+              <div id="detailsContainer">
+                  <div id="bookDetailsDiv"><i> Information about the selected book will be displayed here. </i></div>
+                  <div id="booksDiv" class="col-xs-8">
+                    <script id="bookDetailsTemplate" type="text/template">
+                      {{#bookDets}}
+                        <img class='thumbnail' src='{{volumeInfo.imageLinks.smallThumbnail}}'/>
+                        <h2 class='title'>Title: {{volumeInfo.title}}</h2>
+                        <p>Author: {{volumeInfo.authors}}</p>
+                        <p>Publisher: {{volumeInfo.publisher}}</p>
+                        <p>Description: {{volumeInfo.description}}</p>
+                        <p>Pages: {{volumeInfo.pageCount}}</p>
+                      {{/bookDets}}
+                      </script>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
-		
-
-		<script id ="bookViewTemplate" type="text/template">
-			{{#items}}
-				<div class ="bookTemplate" id ='{{id}}' style="width: 40%;" dataLayout = "gridView">
-					{{#volumeInfo}}
-						{{#imageLinks}}
-							<img src ='{{thumbnail}}'/>
-						{{/imageLinks}}
-						<h2> {{title}} {{subtitle}} </h2>
-					{{/volumeInfo}}
-				</div>
-			{{/items}}
-		</script>
-
-		<script id="bookDetails" type="text/template">
-				<div class ="bookDetailDisplay">
-					<div id = "bookViewOverlay">
-						<div style="text-align:left">
-							<input type ="button" id="buttonHide" value="Close" style="cursor:pointer"/>
-						</div>
-						{{#volumeInfo}}
-							<h2>{{title}} {{subtitle}}</h2>
-							{{#imageLinks}}
-								<img src ='{{thumbnail}}' style='margin:5 auto'/>
-							{{/imageLinks}}
-
-							<div style="text-align:left">
-								<p style="clear: both;"><b>Author:</b> {{authors}}</p>
-								<p><b>Description:</b> {{description}}</p>
-								<p><b>Publisher:</b> {{publisher}}</p>
-								<p><b>Published Date:</b> {{publishedDate}}</p>
-								<p><b>PageCount:</b> {{pageCount}}</p>
-								<p><b>Rating:</b> {{averageRating}}</p>
-								<p><b>Categories:</b> {{categories}}</p>
-								<p><b>Book Preview:</b> <a href="{{previewLink}}" target="_blank"> {{previewLink}}</a></p>
-							</div>
-						{{/volumeInfo}}
-					</div>
-				</div>
-		</script>
-
-	</head>
-
-	<body>
-		<div>
-			<center><h1>Milestone 4</h1></center>
-			<a href="index.html"> RETURN TO HOME PAGE</a>
-			<div class="result">
-				<input type = "text" id = "textbox" class = "searchbox">
-				<input type = "Submit" id = "searchBtn" resultCount = "0" class = "pageView" value = "Search">
-			</div>
-			<div class="result">
-				<span>Page</span>
-				<button id = "button" resultCount = "0" class = "pageView">1</button>
-				<button id = "button" resultCount = "10" class = "pageView">2</button>
-				<button id = "button" resultCount = "20" class = "pageView" >3</button>
-				<button id = "button" resultCount = "30" class = "pageView" >4</button>
-				<button id = "button" resultCount = "40" class = "pageView" >5</button>
-			</div>
-			<div class="result">
-				<button id="gridButton" class="layout"> Grid View </button>
-				<button id="listButton" class="layout"> List View </button>
-			</div>
-			<div class="result">
-				<button id = "bookSearchButton" class = "switchView" > Book Search Page</button>
-				<button id = "bookshelf" class = "switchView"> My BookShelf</button>
-				<div id= "gridView" class= "bookList" ></div>
-				<div id= "gridView" class= "searchResult"></div>
-				<div class = "bookView"></div>
-			</div>
-		</div>
-
-		<script src="bookinfo.js"></script>
-
-	</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+    <script src="booksearch.js"></script>
+  </body>
 </html>

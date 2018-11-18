@@ -1,0 +1,86 @@
+body {
+  background-color: #fff;
+  color: black;
+  font-family: 'Arial';
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 15px;
+}
+
+.bookDiv {
+  min-height: 300px;
+}
+
+.book {
+  cursor: pointer;
+}
+ul {
+  display: inline;
+}
+ul>li {
+  list-style: none;
+  display: inline;
+}
+
+.button {
+  border-radius:5px;
+  background-color:white;
+}
+
+#submit {
+  border-radius: 5px;
+  background-color:white;
+}
+
+#list {
+  border-radius:5px;
+  background-color:white;
+}
+
+#grid {
+  border-radius:5px;
+  background-color:orange;
+}
+
+#booksDiv {
+  background-color:rgba(256, 256, 256, 0.5);
+  border-radius: 5px;
+  padding: 5px;
+}
+#myBookshelf {
+  background-color:orange;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#detailsContainer {
+  background-color:orange;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.row.is-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.is-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+.highlight {
+  background: red;
+}
+
+.highlight-view {
+  background: red;
+}

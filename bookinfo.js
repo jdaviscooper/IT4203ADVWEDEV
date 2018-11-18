@@ -1,108 +1,74 @@
-$(document).ready(function(){
-				var url = "https://www.googleapis.com/books/v1/volumes?q=";
-				var maxResults = "&maxResults=10&startIndex=";
-				$('.bookList').hide();
+var searchTerm = $('#search-box');
+var booksDiv = $('#booksDiv');
+var bookDetailsDiv = $('#bookDetailsDiv');
+var template = $('#bookListTemplate').html();
+var bookDetailsTemplate = $('#bookDetailsTemplate').html();
+var queryURL = "https://www.googleapis.com/books/v1/volumes/";
+var bookShelfURL = "https://www.googleapis.com/books/v1/users/106955433011694532244/bookshelves/0/volumes";
+var bookShelfTemplate = $('#bookShelfTemplate').html();
+var myBookshelf = $('#myBookshelf');
 
-				$.getJSON("https://www.googleapis.com/books/v1/users/106955433011694532244/bookshelves/0/volumes", function(jsonData){
-					var template = $('#bookViewTemplate').html();
-					var html = Mustache.render(template,jsonData);
-					$('.bookList').html(html);
+function searchBooks(url, param, page){
+  $.ajax({url: url + param, method: 'GET'}).done(function(response) {
+    if (url === queryURL && param.length > 15) {
+      let data = {
+        books: response.items
+      };
+      booksDiv.html(Mustache.render(template, data));
+    } else if (url === bookShelfURL) {
+      let data = {
+        books: response.items
+      };
+      myBookshelf.html(Mustache.render(bookShelfTemplate, data));
+    } else if (url === queryURL && param.length < 15) {
+      let data = {
+        bookDets: response
+      };
+      console.log(data);
+      bookDetailsDiv.html(Mustache.render(bookDetailsTemplate, data));
+    }
+  });
+  queryURL = "https://www.googleapis.com/books/v1/volumes/";
+}
 
-					$('.bookTemplate').click(function (){
-						bookDetailsFunction(jsonData, $(this).attr("id"));
-					});
-				});
+$('.page').on('click', function(event){
+  event.preventDefault();
+  var page = $(this).attr('data-page');
+  var param = '?' + $.param({'q': searchTerm.val(), 'startIndex': page, 'maxResults': 10});
+  searchBooks(queryURL, param, page);
+});
 
-				$("#searchBtn").click(function (){
-					searchfunction($(this).attr("resultCount"));
-					return false;
-				});
+(function() {
+    var param = '';
+    searchBooks(bookShelfURL, param);
+})();
 
-				$("#bookshelf").click(function (){
-					$(".searchResult").fadeOut();
-					$('.bookList').fadeIn();
-					$('#bookshelf').css('background-color','#006666');
-					$('#bookSearchButton').css('background-color','');
 
-				});
+$(document).on('click', '.book', function() {
+  var param = $(this).attr('data-bookid');
+  searchBooks(queryURL, param);
+  $('#myModal').modal('toggle');
+});
 
-				$("#bookSearchButton").click(function (){
-					$(".bookList").fadeOut();
-					$('.searchResult').fadeIn();
-					$('#bookSearchButton').css('background-color','#006666');
-					$('#bookshelf').css('background-color','');
+$('#list').on('click', function(event){
+  event.preventDefault();
+  $('.class-to-toggle').attr('class', 'book class-to-toggle col-xs-12');
+  $('.bookInformationImg').attr('class', 'bookInformationImg col-xs-3');
+  $('.bookInformationTitle').attr('class', 'bookInformationTitle col-xs-9');
+});
+$('#grid').on('click', function(event){
+  event.preventDefault();
+  $('.class-to-toggle').attr('class', 'book class-to-toggle col-xs-6');
+  $('.bookInformationImg').attr('class', 'bookInformationImg col-xs-12');
+  $('.bookInformationTitle').attr('class', 'bookInformationTitle col-xs-12');
+});
 
-				});
+$('.button').on('click', function(){
+  $(".highlight").removeClass("highlight");
+  $(this).addClass('highlight');
+});
 
-				$(".pageView").on('click', function (){
-					searchButton($(this).attr("id"));
-					searchfunction($(this).attr("resultCount"));
-					return false;
-				});
-
-				$('#listButton').on('click', function (){
-					listLayout();
-				});
-
-				$('#gridButton').click(function (){
-					gridLayout();
-				});
-
-				function searchfunction(resultCount){
-					box = $("#textbox").val();
-					$.getJSON(url + box+ maxResults + resultCount, function(jsonData){
-						var template = $('#bookViewTemplate').html();
-						var html = Mustache.render(template,jsonData);
-						$('.searchResult').html(html);
-
-						$('.bookTemplate').click(function (){
-							bookDetailsFunction(jsonData, $(this).attr("id"));
-						});
-					});
-
-					var layout = $('.bookTemplate').attr('dataLayout');
-					console.log(layout + "1");
-					if (layout != "gridView"){
-						listLayout();
-						console.log(layout + "2");
-					}
-					if (layout != "listView") {
-						gridLayout();
-						console.log(layout + "3");
-					}
-					return false;
-				}
-
-				function bookDetailsFunction (searchResults, bookid){
-					var template = $('#bookDetails').html();
-					$.each(searchResults.items, function (index,book){
-						if (book.id == bookid){
-							var html = Mustache.render(template,searchResults.items[index]);
-							$('.bookView').html(html);
-							$('.bookView').fadeIn();
-						}
-					});
-
-					$('#buttonHide').on('click',function(){
-						$('.bookView').fadeOut();
-					});
-				}
-
-				function listLayout (){
-					$('.bookList').attr('id','listView');
-					$('.searchResult').attr('id','listView');
-					$('.bookTemplate').css("width", "40%");
-					$('.bookTemplate').attr('dataLayout', 'listView');
-				}
-
-				function gridLayout (){
-					$('.bookList').attr('id','gridView');
-					$('.searchResult').attr('id','gridView');
-					$('.bookTemplate').css("width", "40%");
-					$('.bookTemplate').attr('dataLayout', 'gridView');
-				}
-
-				function searchButton (){
-						$("#button").css('background-color', '');
-				}
-			});
+$('.view-option-btn').on('click', function(){
+  $(".view-option-btn").removeClass("highlight-view");
+  $(this).addClass('highlight-view');
+});
