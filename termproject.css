@@ -144,14 +144,14 @@ button:active {
   border: 1px solid #777;
   border-radius: 5px;
   padding: 10px 10px 60px;
-  background-color: white;
+  background-color: orange;
   overflow: auto;
 }
 #rating {
   display: inline;
   margin-left: 20px;
   padding: 5px 10px;
-  background-color: red;
+  background-color: orange;
   border-radius: 10px;
   color: white;
 }
@@ -163,7 +163,7 @@ button:active {
 		right:10px;
 		font-size:1em;
 		font-weight:bold;
-		background-color:white;
+		background-color:orange;
 		color:black;
 		z-index:99;
 	}
@@ -193,7 +193,7 @@ button:active {
 }
 
 #castContainer button {
-  background-color: white;
+  background-color: orange;
 }
 
 .castName {
@@ -221,7 +221,7 @@ button:active {
 
 #cast-container {
 	border: .5px solid #203b66;
-	background-color: white;
+	background-color: orange;
 	border-radius: 5px;
 }
 #popularMoviesContainer{
