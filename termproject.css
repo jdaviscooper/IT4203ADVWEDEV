@@ -1,249 +1,162 @@
-html {
-  height: 100%;
-}
 
-body {
-  position: relative;
-  margin: 0;
-  min-height: 100%; 
-  text-align: left;
-}
+		body {
+			background-color:  orange;
+			font-family: Arial;
+		}
+		
+		h1 {
+			text-align: center;
+		}
 
-.bc-light-gray {
-  background-color: #777;
-}
+		img{
+			float: center;
+			width: 150px;
+			height: 200px;
+		}
 
-.bc-light-gray2 {
-  background-color: #fafafa;
-}
+		.mainContent{
+			margin: 15 auto;
+			text-align: center;			
+		}
+		
+		.searchCriteria{
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
 
-.color-dark-gray {
-  color: #545454;
-}
+		.searchCriteria button{
+			color: white;
+			background-color: #777;
+			display: inline-block;
+			border: solid thin;
+			border-color: black;
+			cursor: pointer;
+			margin-left:50px;
+		}
 
-.fr {
-  float: right;
-  height:50px;
-  width:120px;
-}
+		.searchCriteria button:hover{
+			background-color: #666666;
+			cursor: pointer;
+		}
 
+		.searchbox{
+			float: left;
+			margin: 0 auto;
+		}
 
-.fw-bold {
-  font-weight: bold;
-}
+		.pageView{
+			text-align:center;	
+			color: black;
+			border-style: solid;			
+			background-color: transparent;
+			color: black;
+			border-style: solid;
+			border-color: #777;	
+		}
 
-#header {
-  width: 100%;
-  overflow: auto;
-  border-bottom: 1px solid gray;
-  background-color: #777;
-  padding: 5px 80px;
-}
+		.pageView:hover{
+			cursor:pointer;
+			background-color: #666666;
+		}
+		
+		.searchArea{
+			width: 100%;
+			display: flex;
+			justify-content: center;
+		}
 
-h1, h3 {
-  display: inline-block;
-  margin: 0px;
-}
+		#gridView{
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			flex-grow: 0;
+			width: 100%;
+			justify-content: center;		
+		}
 
-#header h1 {
-  cursor: pointer;
-}
+		#listView{
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: column;
+			flex-grow: 0;
+			width: 100%;
+			justify-content: center;			
+		}
 
-#header h1:active {
-  color: #136cb2;
-}
+		.movieView {
+			border: solid #777;
+			background-color: #70dbdb;
+			margin: 5px;
+		}
 
-#results-container h1 {
-  display: flex;
-  margin-bottom: 20px;
-}
+		#movieSearch{
+			margin-top: 190px;
+			position: absolute;
+			left: 9%;
+			z-index: -2;
+		}
 
-#subtitle {
-  font-weight: bold;
-  margin-left: 20px;
-}
+		.movieDetailsPage{
+			position: fixed;
+			display: none;
+			width: 100%;
+			height: 100%;
+			top: 0px;
+			left: 0px;
+			background-color: rgba(0,0,0, 0.5);
+			
+		}
 
-#main-container {
-  padding: 20px 100px 0px 100px;
-}
+		#movieDetailsPageDisplay{
+			position: fixed;
+			border: solid #006666;
+			background-color:#5F9EA0;
+			width: 80%;
+			height: 90%;
+			top: 30px;
+			left: 120px;
+			margin: auto 10;
+			padding:10px;
+			vertical-align: middle;	
+			overflow: auto;
+		}
 
-#search-container {
-  margin-bottom: 20px;
-}
+		.castTemplate{
+			display: flex;
+			justify-content: space-between;			
+		}
 
-#movieSearchBox {
-  width: 340px;
-  font-size: 14pt;
-  -webkit-appearance: none;
-}
+		.reviewBox{
+			background-color: #5F9EA0;
+		}
 
-button {
-  padding: 5px;
-  border: 1px solid gray;
-  background-color: #777;
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-}
+		.reviewTemplate{
+			display: flex;
+			flex-direction: column;
+		}
 
-button:hover {
-  box-shadow: 2px 2px 2px black;
-}
+		.switchView{
+			
+			background-color: #006666;
+			color: white;
+			border-style: solid;
+			border-color: #006666;	
+		}
 
-button:active {
-  border: 2px solid black;
-}
+		.switchView:hover{
+			cursor:pointer;
+			background-color: #666666;
+		}
 
-#results-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  border: 1px solid #777;
-  border-radius: 5px;
-  padding: 10px 10px 10px;
-  background-color: white;
-  overflow: auto;
-}
+		.listGrid{
+			
+			background-color: transparent;
+			color: black;
+			border-style: solid;
+			border-color: black;
+		}
 
-.close-results-container
-	{
-		position:absolute;
-		top:10px;
-		right:10px;
-		font-size:1em;
-		font-weight:bold;
-		background-color:white;
-		color:black;
-		z-index:99;
-	}
-
-
-.resultsBoxList{
-  padding: 10px;
-  width: 800px;
-  flex-grow: 1;
-  cursor: pointer;
-  color: #136cb2;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11pt;
-}
-.resultsBoxGrid{
-  height: 100px;
-  width: 100px;
-  color: #136cb2;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11pt;
-}
-
-.results-box:hover {
-  background-color: #c5e3ed;
-}
-#data-container {
-  display: block;
-  width: 1000px;
-  border: 1px solid #777;
-  border-radius: 5px;
-  padding: 10px 10px 60px;
-  background-color: orange;
-  overflow: auto;
-}
-#rating {
-  display: inline;
-  margin-left: 20px;
-  padding: 5px 10px;
-  background-color: orange;
-  border-radius: 10px;
-  color: white;
-}
-
-.close-data-container
-	{
-		position:absolute;
-		top:10px;
-		right:10px;
-		font-size:1em;
-		font-weight:bold;
-		background-color:orange;
-		color:black;
-		z-index:99;
-	}
-
-.year {
-  color: black;
-}
-
-#results-container img {
-  width: 260px;
-  float: left;
-  margin: 0px 20px 20px 0px;
-}
-
-#rating {
-  display: inline;
-  margin-left: 20px;
-  padding: 5px 10px;
- 
-  border-radius: 10px;
-  color: black;
-}
-
-#castContainer {
-  width: 580px;
-  display: inline-block;
-}
-
-#castContainer button {
-  background-color: orange;
-}
-
-.castName {
-  display: inline-block;
-  width: 240px;
-}
-
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  overflow: auto;
-  padding: 16px 80px;
-  border-top: 1px solid gray;
-  background-color: #777;
-  outline: 4px solid white;
-}
-
-
-.pseudolink { 
-   color:blue; 
-   text-decoration:underline; 
-   cursor:pointer; 
-   }
-
-#cast-container {
-	border: .5px solid #203b66;
-	background-color: orange;
-	border-radius: 5px;
-}
-#popularMoviesContainer{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	padding-bottom: 20px;
-}
-#popMovie{
-	width: 100px;
-    height: 110px;
-	margin: 5px;
-}
-#favorites{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	padding-bottom: 60px;
-}
-#favoriteMovie{
-	width: 100px;
-    height: 110px;
-	margin: 5px;
-
-}
+		.listGrid:hover{
+			background-color: #666666;
+		}
