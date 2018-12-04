@@ -1,136 +1,435 @@
+<!DOCTYPE html>
 <html>
-	<head>		
-		<title>Term Project</title>
-		<meta charset="UTF-8"/>
-		
-		<link rel="stylesheet" href="termproject.css">
-		
-		<script
-			src="https://code.jquery.com/jquery-3.2.1.min.js">	
-		</script>
-		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js">
-		</script>
-		
-		<script id ="defualtMovieView" type="text/template"> 
-			{{#results}}
-				<div class ="movieView" style="width: 40%;" dataLayout = "grid">
-					<h2> {{title}}</h2>
-					<img src ='https://image.tmdb.org/t/p/w500/{{poster_path}}'/>				
-					<p style="clear:both; cursor: pointer; color: #001a1a; text-align: center;" class="showDetails" movieId = '{{id}}'><b>Click for Movie Details</b></p>
-				</div>
-			{{/results}}
-		</script>
-		
-		<script id="MovieDetails" type="text/template">
-				<div class ="MovieDetailDisplay">
-					<div id = "movieDetailsPageDisplay">
-						<div>
-							<input type ="button" class ="detailsPage" value="Close" style="cursor: pointer;" /> 
-						</div>
-						<h2> {{original_title}} </h2>
-						<img src ='https://image.tmdb.org/t/p/w780/{{poster_path}}' style=" height:250; width:200;"/>
-						<div style = "text-align: left">
-							<p> <b>Overview</b>: {{overview}} </p>
-							<p style="clear:both;"><b>Status</b>: {{status}}</p>
-							<p><b>Release Date</b>: {{release_date}}</p>
-							<p><b>Runtime</b>: {{runtime}} mins</p>
-							<p><b>Budget</b>: {{budget}}</p>
-							<p><b>Genre(s)</b>:
-							{{#genres}}
-								{{#name}}
-									{{.}}, 
-								{{/name}}
-							{{/genres}}
-							</p>
-							<p><b>Production Companies</b>: 
-								{{#production_companies}}
-									{{#name}}
-										{{.}},
-									{{/name}}
-								{{/production_companies}}
-							</p>
-							<p><b>Average User Rating</b> {{vote_average}} out of 10</p>
-							<p><b>Number of Rating</b>: {{vote_count}}</p>
-							<p><b>Movie Homepage Link</b>: <a href="{{homepage}}" target="_blank">{{original_title}}</a></p>
-							<p><b>IMDB Link</b>: <a href="http://www.imdb.com/title/{{imdb_id}}" target="_blank">{{original_title}}</a></p>
-							<h2> Cast List: </h2>
-							<div class="castBox"> </div>						
-							<h2> Reviews </h2>
-							<div class="reviewBox"></div>
-						</div>
-					</div>
-				</div>
-		</script>
-			
-		
-		<script id="CastDetails" type="text/template">		
-			<div>	
-					{{#cast}}
-						<div>	
-							<p><b> {{name}} </b> as {{character}}</p>		
-						</div>
-					{{/cast}}			
-			</div>
-		</script>
-		
-		<script id="ReviewDetails" type="text/template">
-			<div class="reviewTemplate">
-				{{#results}}
-					<div style="border: black;">
-						<p><b>{{author}}</b></p>
-						<p>{{content}}</p>
-					</div>
-				{{/results}}
-			</div>
-		</script>
+<head>
+    <title>Term Project</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js"></script>
 
-				
-	</head>
-	<body>	
-			<h1>Term Project: Movie Search Engine</h1>
-			<h4><a href="index.html"> RETURN TO HOME PAGE</a></h4>
-					
-				<div class="searchCriteria">
-					<button id="searchId"> Movie Search </button>
-					<button id="popularId"> Popular Movies</button>
-					<button id="topRatedId">Top Rated Movies</button>
-					<button id="upcomingMovieId"> Upcoming Movies</button>
-					<button id="inTheaterId"> Movies In Theater </button>
-					
-				</div>
+    <script id='searchResultsTemplate' type='text/template'>
 
-			<div class="mainContent">
-			<div class="searchArea">
-				<div class="searchContent">
-					<input type = "text" id = "textbox" class = "searchbox">
-					<input type = "Submit" id = "searchButton" resultCount = "1" class = "pageView" value = "Search">
-				</div>
-			</div>
-			<div class="mainContent">
-				<div class="pageNumbers">
-					<span>Page</span>
-					<button id = "button" resultCount = "1" class = "pageView">1</button>
-					<button id = "button" resultCount = "2" class = "pageView">2</button>
-					<button id = "button" resultCount = "3" class = "pageView" >3</button>
-					<button id = "button" resultCount = "4" class = "pageView" >4</button>
-					<button id = "button" resultCount = "5" class = "pageView" >5</button>
-				</div>
-			</div>
-			<div class="mainContent">
-					<button id="gridButton" class="listGrid"> Grid View</button>
-					<button id="listButton" class="listGrid"> List View</button>
-			</div>	
-					
-			<div id= "gridView" class= "movieSearch"></div>
-			<div class ="movieDetailsPage"></div>
-			<div id = "gridView" class="popular"></div>
-			<div id = "gridView" class="topRated"></div>
-			<div id = "gridView" class="upcoming"></div>
-			<div id = "gridView" class="inTheater"></div>
-	
-	<script src="termproject3.js">	
-	</script>
-			
-	</body>
+        {{#results}}
+        <div class='resultItem'>
+            <h2><a href="javascript:;" class="mlink" mID={{id}} mType={{media_type}}>{{title}}{{name}}</a>{{#media_type}} - <i>{{media_type}}</i>{{/media_type}}</h2>
+
+            <a href="javascript:;" class="mlink" mID={{id}} mType={{media_type}}>
+                <img {{^poster_path}} {{^profile_path}}
+                     src="https://image.tmdb.org/t/p/w500/" alt="no picture given"
+                     {{/profile_path}} {{/poster_path}}
+                     src='https://image.tmdb.org/t/p/w500/{{poster_path}}{{profile_path}}'
+                     class="resultPic" alt='picture of {{name}}{{title}}'>
+            </a>
+            <h3 class="overview">{{overview}}</h3>
+            {{^overview}}
+            <h3>Known For:</h3>
+            <div class="kfList">
+                <ul>
+                    {{#known_for}}
+                    {{^title}}
+                    <li>{{name}}</li>{{/title}}
+                    {{#title}}
+                    <li>{{title}}</li>{{/title}}
+                    {{/known_for}}
+                </ul>
+            </div>
+            {{/overview}}
+        </div>
+        {{/results}}
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    e.preventDefault();
+                    searchHandler();
+                }
+            });
+
+            $("#closeViewButton").click(function () {
+                $("#detailsView").fadeOut();
+            });
+            $('#searchButton').click(searchHandler);
+            $("#changeViewButton").click(function () {
+                if ($(this).attr("viewType") == "grid") {
+                    $(".resultItem").css("width", "80%");
+                    $("#changeViewButton").attr("viewType", "list");
+                    $(".resultPic").css("max-width", "10%");
+                } else {
+                    $(".resultItem").css("width", "18%");
+                    $("#changeViewButton").attr("viewType", "grid");
+                    $(".resultPic").css("max-width", "60%");
+                }
+            });
+            $("#topMovieButton").click(function () {
+                num = 1;
+                url = 'https://api.themoviedb.org/3/movie/popular?api_key=53dad4c9b5672542ef46b75caa820412&language=en-US&page=1';
+                getTopMovies(url);
+            });
+            $("#topTVButton").click(function () {
+                num = 1;
+                url = 'https://api.themoviedb.org/3/tv/popular?api_key=53dad4c9b5672542ef46b75caa820412&language=en-US&page=1';
+                getTopTV(url);
+            });
+            $("#discoverButton").click(function () {
+                query = $("#discoverQuery").val();
+                num = 1;
+                discoverType = $("#discoverList").val();
+                media = $("#mediaList").val();
+                url = api + "/discover/" + media + apikey + "&sort_by=popularity.desc&" + discoverType + "=" + query;
+                getResults(url);
+            });
+
+            var api = 'https://api.themoviedb.org/3';
+            var multisearch = '/search/multi';
+            var apikey = '?api_key=53dad4c9b5672542ef46b75caa820412';
+            var num = 1;
+            var pageNum = "&page=" + num;
+            var loading = false;
+
+            $(document).on('scroll', function () {
+                if ($(document).scrollTop() + $(window).height() >= $(document).height() - 200 && loading == false) {
+                    loading = true;
+                    num = num + 1;
+                    pageNum = "&page=" + num;
+                    url = url + pageNum;
+                    if ($("#head").html() == '<br><h2>Movies, TV Shows, and People Results</h2>') {
+                        getResults(url);
+                    } else if ($("#head").html() == '<br><h2>Top Movies</h2>') {
+                        getTopMovies(url);
+                    } else {
+                        getTopTV(url);
+                    }
+                }
+            });
+
+            function searchHandler() {
+                $("#head").html("loading...");
+                query = "&query=" + $("#query").val();
+                num = 1;
+                url = api + multisearch + apikey + query;
+                getResults(url);
+            }
+            function linkHandler() {
+                $(".mlink").click(function () {
+                    $("#detailsView").fadeIn();
+                    type = "/" + $(this).attr("mType");
+                    var id = "/" + $(this).attr("mID");
+                    var url = api + type + id + apikey;
+                    getDetails(url);
+                });
+            }
+            function movieLinkHandler() {
+                $(".mlink").click(function () {
+                    $("#detailsView").fadeIn();
+                    type = "/movie";
+                    var id = "/" + $(this).attr("mID");
+                    var url = api + type + id + apikey;
+                    getDetails(url);
+                });
+            }
+            function tvLinkHandler() {
+                $(".mlink").click(function () {
+                    $("#detailsView").fadeIn();
+                    type = "/tv";
+                    var id = "/" + $(this).attr("mID");
+                    var url = api + type + id + apikey;
+                    getDetails(url);
+                });
+            }
+            function creditsLinkHandler() {
+                $(".creditsLink").click(function () {
+                    type = "/person";
+                    var id = "/" + $(this).attr("pID");
+                    var url = api + type + id + apikey;
+                    getDetails(url);
+                });
+            }
+            function getResults(url) {
+
+                $.getJSON(url, function (json) {
+                    var length = json.results.length;
+                    $('#head').html('<br><h2>Movies, TV Shows, and People Results</h2>');
+                    var template = $('#searchResultsTemplate').html();
+                    var html = Mustache.render(template, json);
+                    if (num == 1) {
+                        $("#result").html(html);
+                    } else if (num > 1) {
+                        $("#result").append(html);
+                    }
+                    loading = false;
+                    $("#result").css("opacity", "1");
+                    linkHandler();
+                });
+            }
+            function getDetails(url) {
+
+                $.getJSON(url, function (json) {
+                    var template = $('#detailsTemplate').html();
+                    var html = Mustache.render(template, json);
+                    $("#details").html(html);
+
+                    var creditsUrl = "https://api.themoviedb.org/3" + type + "/" + json.id + "/credits?api_key=53dad4c9b5672542ef46b75caa820412";
+                    $.getJSON(creditsUrl, function (json2) {
+                        var template2 = $("#creditsTemplate").html();
+                        var html2 = Mustache.render(template2, json2);
+                        $(".detailsData").append(html2);
+                        creditsLinkHandler();
+                    });
+                });
+
+            }
+            function getTopMovies(url) {
+
+                $.getJSON(url, function (json) {
+                    var length = json.results.length;
+                    $('#head').html('<br><h2>Top Movies</h2>');
+                    var template = $('#searchResultsTemplate').html();
+                    var html = Mustache.render(template, json);
+                    if (num == 1) {
+                        $("#result").html(html);
+                    } else if (num > 1) {
+                        $("#result").append(html);
+                    }
+                    loading = false;
+                    $("#result").css("opacity", "1");
+                    movieLinkHandler();
+                });
+            }
+            function getTopTV(url) {
+                $.getJSON(url, function (json) {
+                    var length = json.results.length;
+                    $('#head').html('<br><h2>Top TV Shows</h2>');
+                    var template = $('#searchResultsTemplate').html();
+                    var html = Mustache.render(template, json);
+                    if (num == 1) {
+                        $("#result").html(html);
+                    } else if (num > 1) {
+                        $("#result").append(html);
+                    }
+                    loading = false;
+                    $("#result").css("opacity", "1");
+                    tvLinkHandler();
+                });
+            }
+        });
+    </script>
+
+</head>
+
+<script id="detailsTemplate" type="text/template">
+    <div id="detailsGrid" style="background-image: url(https://image.tmdb.org/t/p/w640{{backdrop_path}})">
+        <div class="detailsHeader">
+            {{title}}{{name}}
+        </div>
+        <img {{^poster_path}} {{^profile_path}}
+             src="no image.png" alt="no picture given"
+             {{/profile_path}} {{/poster_path}}
+             src='https://image.tmdb.org/t/p/w500{{poster_path}}{{profile_path}}'
+             class="detailsPic" alt='picture of {{name}}{{title}}'>
+        <div class="detailsData">
+            <p>
+                {{#overview}}Overview: {{overview}}<br>{{/overview}}
+                {{#biography}}Biography: {{biography}}<br>{{/biography}}
+                {{#place_of_birth}}Place of Birth: {{place_of_birth}}<br>{{/place_of_birth}}
+                {{#birthday}}Date of Birth: {{birthday}}<br>{{/birthday}}
+                {{#created_by}}Created By: {{name}} <br>{{/created_by}}
+                {{#first_air_date}}First Aired: {{first_air_date}}<br>{{/first_air_date}}
+                {{#last_air_date}}Last Aired: {{last_air_date}}<br>{{/last_air_date}}
+                {{#release_date}}Release Date: {{release_date}}<br>{{/release_date}}
+                {{#genres}}Genre(s): {{name}}<br>{{/genres}}
+                {{#number_of_episodes}}Number of Episodes: {{number_of_episodes}}<br>{{/number_of_episodes}}
+                {{#number_of_seasons}}Number of Seasons: {{number_of_seasons}}<br>{{/number_of_seasons}}
+                {{#homepage}}Homepage: <a href={{homepage}}>{{homepage}}</a><br>{{/homepage}}
+                {{#networks}}Network(s): {{name}}<br>{{/networks}}
+            </p>
+        </div>
+    </div>
+</script>
+
+<style>
+    body {
+        background-color: #777;
+    }
+
+    #displayDiv {
+        display: block;
+        margin-left: left;
+        margin-right: left;
+        margin-top: 100px;
+        margin-bottom: 70px;
+        padding: 10px;
+        width: 60%;
+    }
+
+    #searchArea {
+        padding: 5px;
+        text-align: right;
+        background-color: orange;
+    }
+
+    #discoverSection {
+        padding: 5px;
+        text-align: left;
+        background-color: #777;
+    }
+
+    #result {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        background-color: #777;
+        opacity: 0;
+    }
+
+    #detailsView {
+        position: fixed;
+        top: 10%;
+        left: 10%;
+        right: 10%;
+        overflow: auto;
+        width: 80%;
+        height: auto;
+        background-color: #FFF;
+        padding: 10px;
+        display: none;
+        box-shadow: 0px 0px 20px 20px #575757;
+        outline: 500px solid rgba(0,0,0,0.8);
+        z-index: 2;
+    }
+
+    #detailsGrid {
+        display: grid;
+        grid-gap: .3rem;
+        grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
+        grid-template-rows: 2fr 5fr;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-color: #777;
+    }
+
+    .detailsHeader {
+        grid-column: 2/5;
+        grid-row: 1/2;
+        margin: 5px;
+        background-color: khaki;
+        padding: 4px;
+        font-size: 2.5em;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .detailsPic {
+        grid-column: 2/3;
+        grid-row: 2/3;
+        max-height: 480px;
+        width: auto;
+        clear: both;
+        margin: 5px;
+        background-color: orange;
+        padding: 4px;
+    }
+
+    .detailsData {
+        grid-column: 3/5;
+        grid-row: 2/3;
+        margin: 5px;
+        background-color: orange;
+        padding: 4px;
+        max-height: 100%;
+        overflow: auto;
+    }
+
+    .resultItem {
+        background-color: orange;
+        border-radius: 2px;
+        width: 18%;
+        overflow-wrap: break-word;
+        max-height: 490px;
+        overflow: auto;
+        margin: 5px;
+        text-align: left;
+        padding: 4px;
+        flex-grow: 1;
+    }
+
+    .resultPic {
+        max-width: 60%;
+        height: auto;
+    }
+
+    .kfList {
+        max-width: 80%;
+        margin: 0 auto;
+    }
+
+    .overview {
+        text-align: justify;
+        font-weight: normal;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    h3 {
+        font-size: .8em;
+    }
+
+    h1 {
+        font-size: 50px;
+        text-align: right;
+        color: black;
+    }
+
+    h2 {
+        text-align: left;
+        font-size: 20px;
+    }
+
+    ul {
+        text-align: left;
+    }
+</style>
+
+<body>
+    <center><h1>Term Project - Movie Database</h1>
+	<h4><a href="index.html">RETURN TO HOME PAGE</a></h4>
+    <div id="displayDiv">
+        <div id="searchArea">
+            <button type=button id=topMovieButton>Top Movies</button>
+            <button type=button id=topTVButton>Top TV Shows</button>
+            <button type="button" id=changeViewButton viewType=grid>Grid & List View</button>
+            <br />
+            <br />
+            <br />
+            <div id="discoverSection">
+                <form action="">
+                    <input type="text" id="query" autofocus placeholder="Search for a movie, tv show, or person" size="60"><button type="button" id="searchButton">Search</button>
+                </form>
+                <br />
+                <br />
+                <br />
+                <form action="">
+                    Search By: <select id=mediaList>
+                        <option value=tv>TV Shows</option>
+                        <option value=movie>Movies</option>
+                    </select>
+                    <select id=discoverList>
+                        <option value=primary_release_year>Year</option>
+                        <option value=with_genres>Genre</option>
+                    </select>
+                    <input type=text id=discoverQuery placeholder=Search size=40>
+                    <button type=button id=discoverButton>Search</button>
+                </form>
+            </div>
+        </div>
+        <span id="head"></span>
+        <div id="result"></div>
+    </div>
+    <div id="detailsView">
+        <button type="button" id="closeViewButton">Close</button>
+        <div id="details"></div>
+    </div>
+	</center>
+    </body>
 </html>
