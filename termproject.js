@@ -1,9 +1,11 @@
 $(document).ready(function(){
-				var domain = "https://api.themoviedb.org/3/";
-				var searchMovie= "search/movie";
-				var api = "?api_key=c2e321bb464b19baee4c9820ed66b995";
-				var query = "&query=";
-				var searchURL = domain + searchMovie + api + query;
+			 var api = 'https://api.themoviedb.org/3';
+                var multisearch = '/search/multi';
+                var apikey = '?api_key=3f92931c9b59c49cb8e746a5ce287c2c';
+                var num = 1;
+                var pageNum = "&page=" + num;
+                var loading = false;
+
 						
 				$("#searchId").click(function(){
 					$(".searchContent").css("display","block");
