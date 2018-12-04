@@ -1,0 +1,162 @@
+
+		body {
+			background-color:  orange;
+			font-family: Arial;
+		}
+		
+		h1 {
+			text-align: center;
+		}
+
+		img{
+			float: center;
+			width: 150px;
+			height: 200px;
+		}
+
+		.mainContent{
+			margin: 15 auto;
+			text-align: center;			
+		}
+		
+		.searchCriteria{
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
+
+		.searchCriteria button{
+			color: white;
+			background-color: #777;
+			display: inline-block;
+			border: solid thin;
+			border-color: black;
+			cursor: pointer;
+			margin-left:50px;
+		}
+
+		.searchCriteria button:hover{
+			background-color: #666666;
+			cursor: pointer;
+		}
+
+		.searchbox{
+			float: left;
+			margin: 0 auto;
+		}
+
+		.pageView{
+			text-align:center;	
+			color: black;
+			border-style: solid;			
+			background-color: transparent;
+			color: black;
+			border-style: solid;
+			border-color: #777;	
+		}
+
+		.pageView:hover{
+			cursor:pointer;
+			background-color: #666666;
+		}
+		
+		.searchArea{
+			width: 100%;
+			display: flex;
+			justify-content: center;
+		}
+
+		#gridView{
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			flex-grow: 0;
+			width: 100%;
+			justify-content: center;		
+		}
+
+		#listView{
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: column;
+			flex-grow: 0;
+			width: 100%;
+			justify-content: center;			
+		}
+
+		.movieView {
+			border: solid #777;
+			background-color: #70dbdb;
+			margin: 5px;
+		}
+
+		#movieSearch{
+			margin-top: 190px;
+			position: absolute;
+			left: 9%;
+			z-index: -2;
+		}
+
+		.movieDetailsPage{
+			position: fixed;
+			display: none;
+			width: 100%;
+			height: 100%;
+			top: 0px;
+			left: 0px;
+			background-color: rgba(0,0,0, 0.5);
+			
+		}
+
+		#movieDetailsPageDisplay{
+			position: fixed;
+			border: solid #006666;
+			background-color:#5F9EA0;
+			width: 80%;
+			height: 90%;
+			top: 30px;
+			left: 120px;
+			margin: auto 10;
+			padding:10px;
+			vertical-align: middle;	
+			overflow: auto;
+		}
+
+		.castTemplate{
+			display: flex;
+			justify-content: space-between;			
+		}
+
+		.reviewBox{
+			background-color: #5F9EA0;
+		}
+
+		.reviewTemplate{
+			display: flex;
+			flex-direction: column;
+		}
+
+		.switchView{
+			
+			background-color: #006666;
+			color: white;
+			border-style: solid;
+			border-color: #006666;	
+		}
+
+		.switchView:hover{
+			cursor:pointer;
+			background-color: #666666;
+		}
+
+		.listGrid{
+			
+			background-color: transparent;
+			color: black;
+			border-style: solid;
+			border-color: black;
+		}
+
+		.listGrid:hover{
+			background-color: #666666;
+		}

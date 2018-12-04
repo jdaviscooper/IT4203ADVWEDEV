@@ -1,0 +1,136 @@
+<html>
+	<head>		
+		<title>Term Project</title>
+		<meta charset="UTF-8"/>
+		
+		<link rel="stylesheet" href="termproject.css">
+		
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.min.js">	
+		</script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js">
+		</script>
+		
+		<script id ="defualtMovieView" type="text/template"> 
+			{{#results}}
+				<div class ="movieView" style="width: 40%;" dataLayout = "grid">
+					<h2> {{title}}</h2>
+					<img src ='https://image.tmdb.org/t/p/w500/{{poster_path}}'/>				
+					<p style="clear:both; cursor: pointer; color: #001a1a; text-align: center;" class="showDetails" movieId = '{{id}}'><b>Click for Movie Details</b></p>
+				</div>
+			{{/results}}
+		</script>
+		
+		<script id="MovieDetails" type="text/template">
+				<div class ="MovieDetailDisplay">
+					<div id = "movieDetailsPageDisplay">
+						<div>
+							<input type ="button" class ="detailsPage" value="Close" style="cursor: pointer;" /> 
+						</div>
+						<h2> {{original_title}} </h2>
+						<img src ='https://image.tmdb.org/t/p/w780/{{poster_path}}' style=" height:250; width:200;"/>
+						<div style = "text-align: left">
+							<p> <b>Overview</b>: {{overview}} </p>
+							<p style="clear:both;"><b>Status</b>: {{status}}</p>
+							<p><b>Release Date</b>: {{release_date}}</p>
+							<p><b>Runtime</b>: {{runtime}} mins</p>
+							<p><b>Budget</b>: {{budget}}</p>
+							<p><b>Genre(s)</b>:
+							{{#genres}}
+								{{#name}}
+									{{.}}, 
+								{{/name}}
+							{{/genres}}
+							</p>
+							<p><b>Production Companies</b>: 
+								{{#production_companies}}
+									{{#name}}
+										{{.}},
+									{{/name}}
+								{{/production_companies}}
+							</p>
+							<p><b>Average User Rating</b> {{vote_average}} out of 10</p>
+							<p><b>Number of Rating</b>: {{vote_count}}</p>
+							<p><b>Movie Homepage Link</b>: <a href="{{homepage}}" target="_blank">{{original_title}}</a></p>
+							<p><b>IMDB Link</b>: <a href="http://www.imdb.com/title/{{imdb_id}}" target="_blank">{{original_title}}</a></p>
+							<h2> Cast List: </h2>
+							<div class="castBox"> </div>						
+							<h2> Reviews </h2>
+							<div class="reviewBox"></div>
+						</div>
+					</div>
+				</div>
+		</script>
+			
+		
+		<script id="CastDetails" type="text/template">		
+			<div>	
+					{{#cast}}
+						<div>	
+							<p><b> {{name}} </b> as {{character}}</p>		
+						</div>
+					{{/cast}}			
+			</div>
+		</script>
+		
+		<script id="ReviewDetails" type="text/template">
+			<div class="reviewTemplate">
+				{{#results}}
+					<div style="border: black;">
+						<p><b>{{author}}</b></p>
+						<p>{{content}}</p>
+					</div>
+				{{/results}}
+			</div>
+		</script>
+
+				
+	</head>
+	<body>	
+			<h1>Term Project: Movie Search Engine</h1>
+			<h4><a href="index.html"> RETURN TO HOME PAGE</a></h4>
+					
+				<div class="searchCriteria">
+					<button id="searchId"> Movie Search </button>
+					<button id="popularId"> Popular Movies</button>
+					<button id="topRatedId">Top Rated Movies</button>
+					<button id="upcomingMovieId"> Upcoming Movies</button>
+					<button id="inTheaterId"> Movies In Theater </button>
+					
+				</div>
+
+			<div class="mainContent">
+			<div class="searchArea">
+				<div class="searchContent">
+					<input type = "text" id = "textbox" class = "searchbox">
+					<input type = "Submit" id = "searchButton" resultCount = "1" class = "pageView" value = "Search">
+				</div>
+			</div>
+			<div class="mainContent">
+				<div class="pageNumbers">
+					<span>Page</span>
+					<button id = "button" resultCount = "1" class = "pageView">1</button>
+					<button id = "button" resultCount = "2" class = "pageView">2</button>
+					<button id = "button" resultCount = "3" class = "pageView" >3</button>
+					<button id = "button" resultCount = "4" class = "pageView" >4</button>
+					<button id = "button" resultCount = "5" class = "pageView" >5</button>
+				</div>
+			</div>
+			<div class="mainContent">
+					<button id="gridButton" class="listGrid"> Grid View</button>
+					<button id="listButton" class="listGrid"> List View</button>
+			</div>	
+					
+			<div id= "gridView" class= "movieSearch"></div>
+			<div class ="movieDetailsPage"></div>
+			<div id = "gridView" class="popular"></div>
+			<div id = "gridView" class="topRated"></div>
+			<div id = "gridView" class="upcoming"></div>
+			<div id = "gridView" class="inTheater"></div>
+	
+	<script src="termproject.js">	
+	</script>
+			
+	</body>
+</html>
