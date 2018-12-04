@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Movie Database</title>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js"></script>
+ 
+ <script id='searchResultsTemplate' type='text/template'>
+            
+            {{#results}}
+            <div class='resultItem'>
+                <h2><a href="javascript:;" class="mlink" mID={{id}} mType={{media_type}}>{{title}}{{name}}</a>{{#media_type}} - <i>{{media_type}}</i>{{/media_type}}</h2>
+
+                <a href="javascript:;" class="mlink" mID={{id}} mType={{media_type}}><img {{^poster_path}}{{^profile_path}}
+                    src="no image.png" alt="no picture given"
+                {{/profile_path}}{{/poster_path}}
+                src='https://image.tmdb.org/t/p/w640/{{poster_path}}{{profile_path}}' 
+                class="resultPic" alt='picture of {{name}}{{title}}'></a>
+                <h3 class="overview">{{overview}}</h3>
+                {{^overview}}
+                    <h3>Known For:</h3>
+                    <div class="kfList">
+                        <ul>
+                        {{#known_for}}
+                            {{^title}}<li>{{name}}</li>{{/title}}
+                            {{#title}}<li>{{title}}</li>{{/title}}
+                        {{/known_for}}
+                        </ul>
+                    </div>
+                {{/overview}}
+            </div>
+            {{/results}}
+        </script>
+
+
+        <script id="detailsTemplate" type="text/template">
+            <div id="detailsGrid" style="background-image: url(https://image.tmdb.org/t/p/w640{{backdrop_path}})">
+                <div class="detailsHeader">
+                    {{title}}{{name}}
+                </div>
+                <img {{^poster_path}}{{^profile_path}}
+                    src="no image.png" alt="no picture given"
+                {{/profile_path}}{{/poster_path}}
+                src='https://image.tmdb.org/t/p/w640{{poster_path}}{{profile_path}}' 
+                class="detailsPic" alt='picture of {{name}}{{title}}'>
+                <div class="detailsData">
+                    <p>{{#overview}}Overview: {{overview}}<br>{{/overview}}
+                        {{#biography}}Biography: {{biography}}<br>{{/biography}}
+                        {{#place_of_birth}}Place of Birth: {{place_of_birth}}<br>{{/place_of_birth}}
+                        {{#birthday}}Date of Birth: {{birthday}}<br>{{/birthday}}
+                        {{#deathday}}Date of Death: {{deathday}}<br>{{/deathday}}
+                        {{#created_by}}Created By: {{name}} <br>{{/created_by}}
+                        {{#first_air_date}}First Aired: {{first_air_date}}<br>{{/first_air_date}}
+                        {{#last_air_date}}Last Aired: {{last_air_date}}<br>{{/last_air_date}}
+                        {{#release_date}}Release Date: {{release_date}}<br>{{/release_date}}
+                        {{#genres}}Genre(s): {{name}}<br>{{/genres}}
+                        {{#number_of_episodes}}Number of Episodes: {{number_of_episodes}}<br>{{/number_of_episodes}}
+                        {{#number_of_seasons}}Number of Seasons: {{number_of_seasons}}<br>{{/number_of_seasons}}
+                        {{#popularity}}Popularity: {{popularity}}<br>{{/popularity}}
+                        {{#budget}}Budget: ${{budget}}<br>{{/budget}}
+                        {{#revenue}}Revenue: ${{revenue}}<br>{{/revenue}}
+                        {{#homepage}}Homepage: <a href={{homepage}}>{{homepage}}</a><br>{{/homepage}}
+                        {{#production_companies}}Production Company(s): {{name}}<br>{{/production_companies}}
+                        {{#networks}}Network(s): {{name}}<br>{{/networks}}
+                        {{#runtime}}Runtime: {{runtime}} minutes<br>{{/runtime}}
+                        {{#also_known_as}}Also Known As: {{.}}<br>{{/also_known_as}}
+                    </p>
+                </div>
+            </div>   
+        </script>
+        <script id="creditsTemplate" type="text/template">
+            Credits:<br>
+            {{#cast}}
+                <a href="javascript:;" pID={{id}} class="creditsLink">{{name}}</a> as {{character}}<br>
+            {{/cast}}
+            {{#crew}}
+                <a href="javascript:;" pID={{id}} class="creditsLink">{{name}}</a> - {{job}}<br>
+            {{/crew}}
+        </script>
+
+        <script>
+            $(document).ready(function() {
+
+                //allow pressing "Enter" key to search
+                $(document).keypress(function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        searchHandler();
+                    }
+                });
+
+                //Buttons
+                $("#closeViewButton").click(function(){
+                    $("#detailsView").fadeOut();
+                });
+                $('#searchButton').click(searchHandler);
+                $("#changeViewButton").click(function(){
+                    if($(this).attr("viewType") == "grid")
+                    {
+                        $(".resultItem").css("width","80%");
+                        $("#changeViewButton").attr("viewType","list");
+                        $(".resultPic").css("max-width", "10%");
+                    }else{
+                        $(".resultItem").css("width","18%");
+                        $("#changeViewButton").attr("viewType","grid");
+                        $(".resultPic").css("max-width", "60%");
+                    }
+                });
+                $("#topMovieButton").click(function(){
+                    num = 1;
+                    url = 'https://api.themoviedb.org/3/movie/popular?api_key=3f92931c9b59c49cb8e746a5ce287c2c&language=en-US&page=1';
+                    //var url = api + 'movie/popular' + apikey + '&language=en-US' + pageNum;
+                    getTopMovies(url);
+                });
+                $("#topTVButton").click(function(){
+                    num = 1;
+                    url = 'https://api.themoviedb.org/3/tv/popular?api_key=3f92931c9b59c49cb8e746a5ce287c2c&language=en-US&page=1';
+                    //var url = api + 'movie/popular' + apikey + '&language=en-US' + pageNum;
+                    getTopTV(url);
+                });
+                $("#discoverButton").click(function(){
+                    query = $("#discoverQuery").val();
+                    num = 1;
+                    discoverType = $("#discoverList").val();
+                    media = $("#mediaList").val();
+                    url = api + "/discover/" + media + apikey + "&sort_by=popularity.desc&" + discoverType + "=" + query;
+                    getResults(url);
+                });
+
+
+                //Movie DV API stuff
+                var api = 'https://api.themoviedb.org/3';
+                var multisearch = '/search/multi';
+                var apikey = '?api_key=3f92931c9b59c49cb8e746a5ce287c2c';
+                var num = 1;
+                var pageNum = "&page=" + num;
+                var loading = false;
+
+                //scroll paging
+                $(document).on('scroll', function() 
+                {
+                    if($(document).scrollTop() + $(window).height() >= $(document).height()-200 && loading == false) 
+                    { 
+                        loading = true;
+                        num = num + 1;
+                        pageNum = "&page=" + num;
+                        url = url + pageNum;
+                        //var url = api + multisearch + apikey + query + pageNum;
+                        if ($("#head").html() == '<br><h2>Movies, TV Shows, and People Results</h2>'){
+                            getResults(url);
+                        }else if($("#head").html() == '<br><h2>Top Movies</h2>'){
+                            getTopMovies(url);
+                        }else{
+                            getTopTV(url);
+                        }
+                    }
+                });
+
+                function searchHandler (){
+                    $("#head").html("loading...");
+                    query = "&query=" + $("#query").val();
+                    num = 1;
+                    url = api + multisearch + apikey + query;
+                    getResults(url);
+                }
+                function linkHandler (){
+                    $(".mlink").click(function(){
+                        $("#detailsView").fadeIn();
+                        type = "/" + $(this).attr("mType");
+                        var id = "/" + $(this).attr("mID");
+                        var url = api + type + id + apikey;
+                        getDetails(url);
+                    });
+                }
+                function movieLinkHandler (){
+                    $(".mlink").click(function(){
+                        $("#detailsView").fadeIn();
+                        type = "/movie";
+                        var id = "/" + $(this).attr("mID");
+                        var url = api + type + id + apikey;
+                        getDetails(url);
+                    });
+                }
+                function tvLinkHandler (){
+                    $(".mlink").click(function(){
+                        $("#detailsView").fadeIn();
+                        type = "/tv";
+                        var id = "/" + $(this).attr("mID");
+                        var url = api + type + id + apikey;
+                        getDetails(url);
+                    });
+                }
+                function creditsLinkHandler (){
+                    $(".creditsLink").click(function(){
+                        //$("#detailsView").fadeIn();
+                        type = "/person";
+                        var id = "/" + $(this).attr("pID");
+                        var url = api + type + id + apikey;
+                        getDetails(url);
+                    });
+                }
+                function getResults (url) {
+                    
+                    $.getJSON(url, function(json){
+                        var length = json.results.length;
+                        $('#head').html('<br><h2>Movies, TV Shows, and People Results</h2>');
+                        var template = $('#searchResultsTemplate').html();
+                        var html = Mustache.render(template, json);
+                        if(num == 1){
+                            $("#result").html(html);
+                        }else if(num > 1){
+                            $("#result").append(html);
+                        }
+                        loading = false;
+                        $("#result").css("opacity","1");
+                        linkHandler();
+                    });
+                }
+                function getDetails (url) {
+
+                    $.getJSON(url, function(json){
+                        var template = $('#detailsTemplate').html();
+                        var html = Mustache.render(template, json);
+                        $("#details").html(html);
+                        
+                        var creditsUrl = "https://api.themoviedb.org/3"+ type + "/"+ json.id +"/credits?api_key=3f92931c9b59c49cb8e746a5ce287c2c";
+                        $.getJSON(creditsUrl, function(json2){
+                            var template2 = $("#creditsTemplate").html();
+                            var html2 = Mustache.render(template2, json2);
+                            $(".detailsData").append(html2);
+                            creditsLinkHandler();
+                        });
+                    });
+                    
+                }
+                function getTopMovies (url) {
+                    
+                    $.getJSON(url, function(json){
+                        var length = json.results.length;
+                        $('#head').html('<br><h2>Top Movies</h2>');
+                        var template = $('#searchResultsTemplate').html();
+                        var html = Mustache.render(template, json);
+                        if(num == 1){
+                            $("#result").html(html);
+                        }else if(num > 1){
+                            $("#result").append(html);
+                        }
+                        loading = false;
+                        $("#result").css("opacity","1");
+                        movieLinkHandler();
+                    });
+                }
+                function getTopTV (url) {
+                    $.getJSON(url, function(json){
+                        var length = json.results.length;
+                        $('#head').html('<br><h2>Top TV Shows</h2>');
+                        var template = $('#searchResultsTemplate').html();
+                        var html = Mustache.render(template, json);
+                        if(num == 1){
+                            $("#result").html(html);
+                        }else if(num > 1){
+                            $("#result").append(html);
+                        }
+                        loading = false;
+                        $("#result").css("opacity","1");
+                        tvLinkHandler();
+                    });
+                }
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <h1>Movie Database</h1>
+        <div id="displayDiv">
+            <div id="searchArea">
+                <form action="">
+                    <input type="text" id="query" autofocus placeholder="Search for a movie, tv show, or person" size="60">
+                </form>
+                <button type="button" id="searchButton">Search</button>
+                <button type="button" id=changeViewButton viewType=grid>Change View</button>
+                <br>
+                <button type=button id=topMovieButton>Top Movies</button>
+                <button type=buton id=topTVButton>Top TV Shows</button>
+                <div id=discoverSection>
+                    
+                    <form action="">
+                        Discover By: <select id=discoverList>
+                            <option value=with_genres>Genre</option>
+                            <option value=primary_release_year>Year</option>
+                            <option value=with_people>People</option>
+                        </select>
+                        <select id=mediaList>
+                            <option value=tv>TV Shows</option>
+                            <option value=movie>Movies</option>
+                        </select>
+                        <input type=text id=discoverQuery placeholder=Discover size=40>
+                        <button type=button id=discoverButton>Discover!</button>
+                    </form>
+                </div>
+            </div>
+            <span id="head"></span>
+            <div id="result"></div>
+        </div>
+        <div id="detailsView"><button type="button" id="closeViewButton">Close</button>
+            <div id="details"></div>
+        </div>
+    </body>
+</html>
